@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Caminhos do Mestre - Jogo Bíblico</title>
+    <style>
+        /* ESTILO VISUAL - Focado em Acessibilidade para Idosos */
+        body {
+            font-family: 'Verdana', sans-serif; /* Fonte sem serifa é mais fácil de ler */
+            background-color: #f0f8ff; /* Azul Alice (suave para os olhos) */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+            border: 2px solid #87CEEB; /* Borda azul céu */
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        p.intro {
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .pergunta-box {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #0056b3;
+        }
+
+        .opcoes {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        button {
+            background-color: #4CAF50; /* Verde agradável */
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            font-size: 20px; /* Letra grande no botão */
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: scale(1.02); /* Leve aumento para indicar seleção */
+        }
+
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            display: none; /* Escondido inicialmente */
+        }
+
+        .feedback.correto {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+        }
+
+        .feedback.errado {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #ebccd1;
+        }
+
+        .versiculo-ref {
+            font-style: italic;
+            font-size: 16px;
+            margin-top: 10px;
+            display: block;
+        }
+
+        #proxima-btn {
+            background-color: #008CBA;
+            margin-top: 20px;
+            display: none;
+        }
+
+        /* Barra de Progresso Simples */
+        .progresso {
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: #666;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container" id="tela-inicial">
+        <h1>Caminhos do Mestre</h1>
+        <p class="intro">Bem-vindo(a).<br>Vamos exercitar a mente e recordar as promessas de Jesus.<br><br>Não há tempo limite. Jogue com paz no coração.</p>
+        <button onclick="iniciarJogo()">Iniciar Jornada</button>
+    </div>
+
+    <div class="container" id="tela-jogo" style="display: none;">
+        <div class="progresso">Pergunta <span id="num-atual">1</span> de <span id="total-perguntas">5</span></div>
+        
+        <div id="pergunta-texto" class="pergunta-box"></div>
+        
+        <div class="opcoes" id="opcoes-container">
+            </div>
+
+        <div id="feedback-msg" class="feedback"></div>
+        
+        <button id="proxima-btn" onclick="proximaPergunta()">Próximo Versículo &rarr;</button>
+    </div>
+
+    <div class="container" id="tela-fim" style="display: none;">
+        <h1>Parabéns!</h1>
+        <p class="intro">Você completou sua caminhada de hoje.</p>
+        <p class="intro" id="mensagem-final"></p>
+        <p style="font-size: 20px; color: #0056b3;">"Aquele que começou a boa obra em vós há de completá-la."</p>
+        <button onclick="location.reload()">Jogar Novamente</button>
+    </div>
+
+    <script>
+        // BANCO DE DADOS DAS PERGUNTAS (Focado em completude de versículos e identidade de Jesus)
+        const perguntas = [
+            {
+                texto: "Complete o versículo: 'Eu sou o caminho, a verdade e a...'",
+                opcoes: ["Esperança", "Vida", "Luz"],
+                correta: 1, // Índice da resposta correta (começa em 0)
+                referencia: "João 14:6",
+                explicacao: "Jesus é a própria Vida. Ele é a única ponte verdadeira até o Pai."
+            },
+            {
+                texto: "O que Jesus disse ser para o mundo?",
+                opcoes: ["O Juiz Severo", "O Rei Rico", "A Luz do Mundo"],
+                correta: 2,
+                referencia: "João 8:12",
+                explicacao: "Quem segue a Jesus não andará em trevas, mas terá a luz da vida."
+            },
+            {
+                texto: "Jesus disse: 'Vinde a mim, todos os que estais cansados e oprimidos, e eu vos...'",
+                opcoes: ["Aliviarei", "Julgarei", "Testarei"],
+                correta: 0,
+                referencia: "Mateus 11:28",
+                explicacao: "Ele oferece descanso para a nossa alma, não mais peso."
+            },
+            {
+                texto: "Na parábola, o pastor deixa as 99 ovelhas para buscar qual?",
+                opcoes: ["A mais forte", "A perdida", "A obediente"],
+                correta: 1,
+                referencia: "Lucas 15:4",
+                explicacao: "Isso mostra o amor individual de Deus por você. Ele vai atrás de quem precisa."
+            },
+            {
+                texto: "Qual é o maior mandamento segundo Jesus?",
+                opcoes: ["Pagar o dízimo", "Amar a Deus e ao próximo", "Fazer jejum"],
+                correta: 1,
+                referencia: "Mateus 22:37-39",
+                explicacao: "O amor é o resumo de toda a lei e os profetas."
+            }
+        ];
+
+        let indiceAtual = 0;
+        let acertos = 0;
+
+        function iniciarJogo() {
+            document.getElementById('tela-inicial').style.display = 'none';
+            document.getElementById('tela-jogo').style.display = 'block';
+            document.getElementById('total-perguntas').innerText = perguntas.length;
+            carregarPergunta();
+        }
+
+        function carregarPergunta() {
+            const pergunta = perguntas[indiceAtual];
+            
+            // Atualizar textos
+            document.getElementById('num-atual').innerText = indiceAtual + 1;
+            document.getElementById('pergunta-texto').innerText = pergunta.texto;
+            
+            // Limpar estados anteriores
+            const containerOpcoes = document.getElementById('opcoes-container');
+            containerOpcoes.innerHTML = '';
+            document.getElementById('feedback-msg').style.display = 'none';
+            document.getElementById('proxima-btn').style.display = 'none';
+
+            // Criar botões
+            pergunta.opcoes.forEach((opcao, index) => {
+                const btn = document.createElement('button');
+                btn.innerText = opcao;
+                btn.onclick = () => verificarResposta(index, btn);
+                containerOpcoes.appendChild(btn);
+            });
+        }
+
+        function verificarResposta(indiceEscolhido, botaoClicado) {
+            const pergunta = perguntas[indiceAtual];
+            const feedbackEl = document.getElementById('feedback-msg');
+            const botoes = document.querySelectorAll('.opcoes button');
+
+            // Desabilitar todos os botões após a escolha
+            botoes.forEach(btn => btn.disabled = true);
+
+            if (indiceEscolhido === pergunta.correta) {
+                acertos++;
+                botaoClicado.style.backgroundColor = '#2E8B57'; // Verde escuro
+                feedbackEl.className = 'feedback correto';
+                feedbackEl.innerHTML = `<strong>Correto!</strong><br>${pergunta.explicacao}<br><span class="versiculo-ref">(${pergunta.referencia})</span>`;
+            } else {
+                botaoClicado.style.backgroundColor = '#d9534f'; // Vermelho suave
+                // Mostrar qual era a certa
+                botoes[pergunta.correta].style.backgroundColor = '#2E8B57';
+                
+                feedbackEl.className = 'feedback errado';
+                feedbackEl.innerHTML = `<strong>A resposta certa era outra.</strong><br>${pergunta.explicacao}<br><span class="versiculo-ref">(${pergunta.referencia})</span>`;
+            }
+
+            feedbackEl.style.display = 'block';
+            document.getElementById('proxima-btn').style.display = 'inline-block';
+        }
+
+        function proximaPergunta() {
+            indiceAtual++;
+            if (indiceAtual < perguntas.length) {
+                carregarPergunta();
+            } else {
+                finalizarJogo();
+            }
+        }
+
+        function finalizarJogo() {
+            document.getElementById('tela-jogo').style.display = 'none';
+            document.getElementById('tela-fim').style.display = 'block';
+            
+            const msgFinal = document.getElementById('mensagem-final');
+            if (acertos === perguntas.length) {
+                msgFinal.innerText = "Excelente! Você conhece muito bem a palavra do Mestre.";
+            } else {
+                msgFinal.innerText = `Você acertou ${acertos} de ${perguntas.length}. O importante é que a semente da Palavra foi plantada!`;
+            }
+        }
+    </script>
+</body>
+</html>
