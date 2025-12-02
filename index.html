@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -165,7 +164,8 @@
 
         /* Hero Section */
         .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1583391735675-1c7c7dc61a8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');
+            /* ALTERADO: Imagem substituída */
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('vidasFlorescentes-01.png');
             background-size: cover;
             background-position: center;
             color: var(--white);
@@ -253,7 +253,7 @@
 
         .activities-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 30px;
         }
 
@@ -263,35 +263,39 @@
             overflow: hidden;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            text-align: center;
+            padding: 30px 20px;
+            border-bottom: 4px solid transparent;
         }
 
         .activity-card:hover {
             transform: translateY(-10px);
+            border-bottom: 4px solid var(--secondary);
         }
 
-        .activity-image {
-            height: 200px;
-            overflow: hidden;
-        }
-
-        .activity-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+        .activity-icon-wrapper {
+            width: 80px;
+            height: 80px;
+            background-color: #f0f7f2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: var(--primary);
+            font-size: 2rem;
             transition: var(--transition);
         }
 
-        .activity-card:hover .activity-image img {
-            transform: scale(1.1);
-        }
-
-        .activity-content {
-            padding: 20px;
+        .activity-card:hover .activity-icon-wrapper {
+            background-color: var(--primary);
+            color: var(--white);
         }
 
         .activity-content h3 {
             margin-bottom: 10px;
             color: var(--primary);
+            font-size: 1.3rem;
         }
 
         /* CTA Section */
@@ -508,7 +512,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
     <header>
         <div class="container">
             <nav class="navbar">
@@ -529,7 +532,6 @@
         </div>
     </header>
 
-    <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container">
             <h1>Instituto Vidas Florescentes</h1>
@@ -541,7 +543,6 @@
         </div>
     </section>
 
-    <!-- About Section -->
     <section class="about" id="about">
         <div class="container">
             <div class="about-content">
@@ -556,39 +557,62 @@
                     <p>Atualmente, apoiamos gratuitamente mais de 150 idosos, oferecendo diversas atividades que enriquecem suas vidas e fortalecem sua fé.</p>
                 </div>
                 <div class="about-image">
-                    <img src="https://images.unsplash.com/photo-1583391735675-1c7c7dc61a8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Idosos felizes participando de atividades no Instituto">
+                    <img src="vidasFlorescentes-01.png" alt="Instituto Vidas Florescentes">
                 </div>
             </div>
         </div>
     </section>
 
- <section class="section">
-    <h2>Atividades Oferecidas</h2>
-    <div class="activities">
-      <div class="card">
-        <i class="fas fa-dumbbell"></i>
-        <h3>Exercícios Físicos</h3>
-        <p>Aulas leves e seguras para promover saúde e mobilidade.</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-bible"></i>
-        <h3>Devocionais &amp; Aconselhamento Cristão</h3>
-        <p>Momentos de fé, oração e fortalecimento espiritual.</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-users"></i>
-        <h3>Convivência &amp; Socialização</h3>
-        <p>Ambiente acolhedor para criar novas amizades.</p>
-      </div>
-      <div class="card">
-        <i class="fas fa-paint-brush"></i>
-        <h3>Oficinas &amp; Artes</h3>
-        <p>Atividades criativas para estimular mente e alma.</p>
-      </div>
-    </div>
-  </section>
+    <section class="activities" id="activities">
+        <div class="container">
+            <div class="section-header">
+                <h2>Atividades Oferecidas</h2>
+                <p>Proporcionamos momentos de alegria, saúde e comunhão</p>
+            </div>
+            <div class="activities-grid">
+                <div class="activity-card">
+                    <div class="activity-icon-wrapper">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <div class="activity-content">
+                        <h3>Exercícios Físicos</h3>
+                        <p>Aulas leves e seguras, acompanhadas por profissionais, para promover saúde, mobilidade e bem-estar físico.</p>
+                    </div>
+                </div>
 
-    <!-- CTA Section -->
+                <div class="activity-card">
+                    <div class="activity-icon-wrapper">
+                        <i class="fas fa-bible"></i>
+                    </div>
+                    <div class="activity-content">
+                        <h3>Devocionais</h3>
+                        <p>Momentos de fé, oração, louvor e aconselhamento cristão para fortalecimento espiritual diário.</p>
+                    </div>
+                </div>
+
+                <div class="activity-card">
+                    <div class="activity-icon-wrapper">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="activity-content">
+                        <h3>Socialização</h3>
+                        <p>Um ambiente acolhedor e familiar para criar novas amizades, compartilhar histórias e combater a solidão.</p>
+                    </div>
+                </div>
+
+                <div class="activity-card">
+                    <div class="activity-icon-wrapper">
+                        <i class="fas fa-paint-brush"></i>
+                    </div>
+                    <div class="activity-content">
+                        <h3>Oficinas & Artes</h3>
+                        <p>Atividades manuais, pintura e artesanato para estimular a mente, a criatividade e a coordenação motora.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section class="cta">
         <div class="container">
             <h2>Junte-se à Nossa Comunidade</h2>
@@ -600,7 +624,6 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section class="contact" id="contact">
         <div class="container">
             <div class="section-header">
@@ -689,7 +712,6 @@
         </div>
     </section>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="footer-content">
